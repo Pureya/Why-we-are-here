@@ -5,15 +5,15 @@ using UnityEngine.AI;
 
 public class UnitController : MonoBehaviour {
 
-    private NavMeshAgent navAgent;
+    public NavMeshAgent navAgent;
     private Transform currentTarget;
 
-    private void Start()
-    {
+	virtual public void Start()
+	{
         navAgent = GetComponent<NavMeshAgent>();
-    }
+	}
 
-    private void Update()
+    virtual public void Update()
     {
         if(currentTarget != null)
         {
@@ -23,6 +23,7 @@ public class UnitController : MonoBehaviour {
 
     public void MoveUnit(Vector3 dest)
     {
+        Debug.Log(dest + " " + navAgent);
         currentTarget = null;
         navAgent.destination = dest;
     }

@@ -27,22 +27,23 @@ public class PlayerManager : MonoBehaviour {
         
         if(Input.GetMouseButtonDown(0))
         {
+            isDragging = true;
+
             mousePositon = Input.mousePosition;
             //Create a ray from the camera to our space
             var camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             //Shoot that ray and get the hit data
-            if(Physics.Raycast(camRay, out hit))
+            if (Physics.Raycast(camRay, out hit))
             {
                 //Do something with that data 
                 //Debug.Log(hit.transform.tag);
                 if (hit.transform.CompareTag("PlayerUnit"))
                 {
                     SelectUnit(hit.transform.GetComponent<UnitController>(), Input.GetKey(KeyCode.LeftShift));
+                    isDragging = false;
+
                 }
-                else
-                {
-                    isDragging = true;
-                }
+
             }
 
         }
@@ -56,6 +57,7 @@ public class PlayerManager : MonoBehaviour {
                 {
                     if (IsWithinSelectionBounds(selectableObject.transform))
                     {
+                        Debug.Log(selectableObject.name);
                         SelectUnit(selectableObject.gameObject.GetComponent<UnitController>(), true);
                     }
                 }
@@ -77,6 +79,7 @@ public class PlayerManager : MonoBehaviour {
                 {
                     foreach (var selectableObj in selectedUnits)
                     {
+
                         selectableObj.MoveUnit(hit.point);
                     }
                 }
@@ -98,8 +101,9 @@ public class PlayerManager : MonoBehaviour {
         {
             DeselectUnits();
         }
+        Debug.Log(unit);
         selectedUnits.Add(unit);
-        unit.SetSelected(false);
+        unit.SetSelected(true);
     }
 
     private void DeselectUnits()
@@ -107,7 +111,7 @@ public class PlayerManager : MonoBehaviour {
         for(int i = 0; i < selectedUnits.Count; i++)
         {
 
-            selectedUnits[i].SetSelected(true);
+            selectedUnits[i].SetSelected(false);
         }
         selectedUnits.Clear();
     }
